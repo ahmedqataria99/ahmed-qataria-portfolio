@@ -1,0 +1,46 @@
+import { useState } from 'react'
+import { ArrowUpRight, Check, Mail, Menu, X } from 'lucide-react'
+import { projects } from './data/projects'
+import profilePhoto from '../Ahmed qataria.jpeg'
+
+const stack = {
+  Languages: ['Dart', 'Kotlin', 'Java', 'Python'], Frameworks: ['Flutter', 'Jetpack Compose'], Architecture: ['MVVM', 'Clean Architecture'],
+  Backend: ['Firebase', 'REST APIs'], Databases: ['SQLite', 'Hive', 'Cloud Firestore'], 'State Management': ['Bloc', 'Cubit', 'StateFlow'],
+  Tools: ['Git', 'GitHub', 'Android Studio', 'VS Code', 'Postman', 'Figma'],
+}
+
+const experience = [
+  { role: 'Android Mobile Development Intern', company: 'DEPI', date: 'Nov 2025 — Jul 2026', items: ['Android applications using Kotlin and Jetpack Compose', 'MVVM architecture, Firebase Authentication, and Cloud Firestore', 'Software engineering and team collaboration'] },
+  { role: 'Flutter Development Intern', company: 'Creativa (NTI)', date: 'Dec 2025 — Jun 2026', items: ['Flutter applications using Clean Architecture', 'Firebase, REST APIs, and responsive reusable UI', 'Git and team collaboration'] },
+  { role: 'Flutter Development Intern', company: 'Google Developer Groups (GDG)', date: 'Oct 2025', items: ['Flutter applications and UI/UX principles', 'Firebase, REST APIs, and state management', 'Performance and code organization'] },
+]
+
+function SectionLabel({ children, index }) { return <div className="section-label"><span>{index}</span><p>{children}</p></div> }
+function Screenshot({ name, src, large, accent }) { return <div className={`screenshot ${large ? 'screenshot-large' : ''} screenshot-${accent}`}><img src={src} alt={`${name} screen`} /></div> }
+function ProjectCard({ project }) {
+  return <article className="project-card" id={project.name.toLowerCase()}>
+    <div className="project-heading"><div><span className="project-number">{project.number}</span><h3>{project.name}</h3><p>{project.subtitle}</p></div><span className="platform">{project.platform}</span></div>
+    <div className={`project-media ${project.images.length === 2 ? 'project-media-two' : ''}`}><Screenshot name={project.screens[0]} src={project.images[0]} large accent={project.accent} /><div className="supporting-shots">{project.images.slice(1).map((image, index) => <Screenshot key={image} name={project.screens[index + 1]} src={image} accent={project.accent} />)}</div></div>
+    <div className="project-details"><div><p className="project-description">{project.description}</p><div className="tags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div></div><div className="project-actions"><a className="text-link" href={project.github} target="_blank" rel="noreferrer">View project <ArrowUpRight size={15} /></a><a className="text-link" href={project.github} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={15} /></a></div></div>
+    <div className="flow"><p>Structure</p><div className="flow-items">{project.architecture.map((item, index) => <span key={item}>{item}{index < project.architecture.length - 1 && <b>↓</b>}</span>)}</div></div>
+  </article>
+}
+
+function App() {
+  const [menuOpen, setMenuOpen] = useState(false); const closeMenu = () => setMenuOpen(false)
+  return <div className="site-shell">
+    <header className="navbar"><a className="brand" href="#top" onClick={closeMenu}>AQ<span>.</span></a><button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation">{menuOpen ? <X /> : <Menu />}</button><nav className={menuOpen ? 'nav-links open' : 'nav-links'}><a href="#about" onClick={closeMenu}>About</a><a href="#work" onClick={closeMenu}>Projects</a><a href="#engineering" onClick={closeMenu}>Engineering</a><a href="#contact" onClick={closeMenu}>Contact</a><a href="https://github.com/ahmedqataria99" target="_blank" rel="noreferrer" aria-label="GitHub"><ArrowUpRight size={17} /></a><a href="https://www.linkedin.com/in/ahmedqataria" target="_blank" rel="noreferrer" aria-label="LinkedIn"><ArrowUpRight size={17} /></a></nav></header>
+    <main id="top">
+      <section className="hero page-section"><div className="hero-copy"><p className="eyebrow">SOFTWARE ENGINEER <span>/</span> 01</p><h1>Ahmed Qataria<br /><em>Software Engineer.</em></h1><p className="hero-role">Mobile &amp; Systems Development</p><p className="hero-lede">Building scalable mobile applications and business management systems with Flutter, Kotlin, Firebase, and modern software architecture.</p><div className="hero-actions"><a className="button button-primary" href="#work">View Projects <ArrowUpRight size={17} /></a><a className="button button-quiet" href="https://github.com/ahmedqataria99" target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={17} /></a></div></div><div className="hero-photo"><div className="photo-frame"><img src={profilePhoto} alt="Ahmed Qataria" /></div><span className="photo-caption">AHMED QATARIA / 2026</span></div></section>
+      <section className="intro-strip"><p>Currently focused on</p><span>Mobile applications</span><span>Business systems</span><span>Maintainable architecture</span></section>
+      <section className="page-section about" id="about"><SectionLabel index="02">About</SectionLabel><div className="about-grid"><h2>Engineering useful software<br /><em>with intention.</em></h2><div><p className="large-copy">I am a Software Engineer focused on mobile development and systems that solve practical business problems.</p><p>My work spans Flutter and Android applications, backend integration, local databases, and architecture that keeps products understandable as they grow.</p></div></div></section>
+      <section className="page-section stack-section"><SectionLabel index="03">Technical toolkit</SectionLabel><div className="stack-grid">{Object.entries(stack).map(([group, items]) => <div className="stack-group" key={group}><h3>{group}</h3>{items.map(item => <span key={item}><Check size={13} />{item}</span>)}</div>)}</div></section>
+      <section className="page-section work-section" id="work"><SectionLabel index="04">Selected work</SectionLabel><div className="section-heading"><h2>Real applications,<br /><em>built to last.</em></h2><p>Three projects built around real workflows, modern mobile technologies, and clear application structure.</p></div><div className="projects-list">{projects.map(project => <ProjectCard project={project} key={project.name} />)}</div></section>
+      <section className="page-section engineering" id="engineering"><SectionLabel index="05">Engineering</SectionLabel><div className="section-heading"><h2>Built with architecture<br /><em>in mind.</em></h2><p>I do not just build interfaces. I think about the structure underneath them: how data moves, how state changes, and how a codebase stays maintainable.</p></div><div className="engineering-grid"><div className="engineering-card featured"><span className="card-index">A / 01</span><h3>Separation of concerns</h3><p>Repository patterns and clean layers keep UI logic, data sources, and business rules distinct.</p><div className="mini-layers"><span>UI</span><span>State</span><span>Repository</span><span>Data</span></div></div><div className="engineering-card"><span className="card-index">A / 02</span><h3>State, made explicit</h3><p>BLoC, Cubit, MVVM, and StateFlow make application behavior easier to reason about.</p><div className="mini-code">state <b>→</b> event <b>→</b> state</div></div><div className="engineering-card"><span className="card-index">A / 03</span><h3>Connected systems</h3><p>Firebase, REST APIs, Cloud Firestore, and SQLite connect products to the data they need.</p><div className="mini-code">local <b>+</b> remote <b>+</b> resilient</div></div></div></section>
+      <section className="page-section experience"><SectionLabel index="06">Experience &amp; education</SectionLabel><div className="experience-layout"><div className="timeline">{experience.map(item => <div className="timeline-item" key={item.company}><div className="timeline-marker" /><div><div className="timeline-top"><h3>{item.role}</h3><span>{item.date}</span></div><p className="company">{item.company}</p><ul>{item.items.map(detail => <li key={detail}>{detail}</li>)}</ul></div></div>)}</div><div className="education"><span className="card-index">EDUCATION</span><h3>Faculty of Computer &amp; Artificial Intelligence</h3><p>Damietta University</p><span>Oct 2024 — Jul 2029</span></div></div></section>
+      <section className="contact page-section" id="contact"><p className="eyebrow">07 / GET IN TOUCH</p><h2>Let's build<br /><em>something.</em></h2><p className="contact-copy">Open to opportunities in software engineering and mobile development.</p><div className="contact-links"><a href="mailto:ahmedqataria98@gmail.com"><Mail size={17} />ahmedqataria98@gmail.com<ArrowUpRight size={15} /></a><a href="https://www.linkedin.com/in/ahmedqataria" target="_blank" rel="noreferrer"><ArrowUpRight size={17} />LinkedIn<ArrowUpRight size={15} /></a><a href="https://github.com/ahmedqataria99" target="_blank" rel="noreferrer"><ArrowUpRight size={17} />GitHub<ArrowUpRight size={15} /></a></div></section>
+    </main><footer><span>Ahmed Qataria</span><span>Software Engineer / Mobile &amp; Systems Development</span><span>© 2026</span></footer>
+  </div>
+}
+
+export default App
