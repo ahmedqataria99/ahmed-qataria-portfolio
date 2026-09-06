@@ -72,6 +72,197 @@
 			"isBackground": false,
 			"problemMatcher": [],
 			"group": "build"
+		},
+		{
+			"label": "Validate Vercel-compatible build",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"run",
+				"build"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Check build output and diff",
+			"type": "shell",
+			"command": "powershell.exe",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"Write-Output ('dist exists: ' + (Test-Path dist)); Write-Output '--- status ---'; git status --short; Write-Output '--- diff ---'; git diff -- package.json package-lock.json"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Commit build fix",
+			"type": "shell",
+			"command": "cmd.exe",
+			"args": [
+				"/d",
+				"/c",
+				"if exist dist (echo dist exists) else (echo dist missing) && git add package.json package-lock.json && git commit -m \"Fix Vercel build permissions\""
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Verify commit state",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"status",
+				"--short"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Stage package files",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"add",
+				"package.json",
+				"package-lock.json"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Create build fix commit",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"commit",
+				"-m",
+				"Fix Vercel build permissions"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Push build fix to main",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"push",
+				"origin",
+				"main"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Verify pushed repository state",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"status",
+				"--short"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Copy production project assets",
+			"type": "shell",
+			"command": "powershell.exe",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"New-Item -ItemType Directory -Force -Path 'public/projects/ghayeb','public/projects/ribhi','public/projects/sanay3y' | Out-Null; Copy-Item -LiteralPath 'ghayep1.png' -Destination 'public/projects/ghayeb/ghayeb1.png' -Force; Copy-Item -LiteralPath 'ghayep2.png' -Destination 'public/projects/ghayeb/ghayeb2.png' -Force; Copy-Item -LiteralPath 'ghayep3.png' -Destination 'public/projects/ghayeb/ghayeb3.png' -Force; Copy-Item -LiteralPath 'ribhi.png' -Destination 'public/projects/ribhi/ribhi.png' -Force; Copy-Item -LiteralPath 'ribhi (1).png' -Destination 'public/projects/ribhi/ribhi-1.png' -Force; Copy-Item -LiteralPath 'ribhi (2).png' -Destination 'public/projects/ribhi/ribhi-2.png' -Force; Copy-Item -LiteralPath 'sanay3y1 (1).png' -Destination 'public/projects/sanay3y/sanay3y-1.png' -Force; Copy-Item -LiteralPath 'sanay3y1 (2).png' -Destination 'public/projects/sanay3y/sanay3y-2.png' -Force; Get-ChildItem -Recurse public/projects -File | Select-Object FullName,Length"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Inspect remaining screenshot names",
+			"type": "shell",
+			"command": "powershell.exe",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"Get-ChildItem -File -Filter ribhi*.png | Sort-Object Name | Select-Object Name,Length; Get-ChildItem -File -Filter sanay3y*.png | Sort-Object Name | Select-Object Name,Length"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Copy remaining production assets",
+			"type": "shell",
+			"command": "powershell.exe",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"$ribhi = @(Get-ChildItem -File -Filter ribhi*.png | Sort-Object Name); Copy-Item $ribhi[2].FullName public/projects/ribhi/ribhi.png -Force; Copy-Item $ribhi[0].FullName public/projects/ribhi/ribhi-1.png -Force; Copy-Item $ribhi[1].FullName public/projects/ribhi/ribhi-2.png -Force; $sanay3y = @(Get-ChildItem -File -Filter sanay3y*.png | Sort-Object Name); Copy-Item $sanay3y[0].FullName public/projects/sanay3y/sanay3y-1.png -Force; Copy-Item $sanay3y[1].FullName public/projects/sanay3y/sanay3y-2.png -Force; Get-ChildItem -Recurse public/projects -File | Select-Object FullName,Length"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Build production project assets",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"run",
+				"build"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Inspect generated project assets",
+			"type": "shell",
+			"command": "powershell.exe",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"Get-ChildItem -Recurse dist/projects -File | Select-Object FullName,Length"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Start production asset preview",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"run",
+				"dev",
+				"--",
+				"--host",
+				"127.0.0.1"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Remove old root project images",
+			"type": "shell",
+			"command": "powershell.exe",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"Get-ChildItem -File -Filter ghayep*.png | Remove-Item -Force; Get-ChildItem -File -Filter ribhi*.png | Remove-Item -Force; Get-ChildItem -File -Filter sanay3y*.png | Remove-Item -Force; Get-ChildItem -File | Select-Object Name"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Commit production image fix",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"add",
+				"."
+			],
+			"isBackground": false,
+			"problemMatcher": []
 		}
 	]
 }
